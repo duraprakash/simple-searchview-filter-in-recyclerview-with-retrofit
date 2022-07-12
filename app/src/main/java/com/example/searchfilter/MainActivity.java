@@ -1,5 +1,7 @@
 package com.example.searchfilter;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.SearchView;
@@ -22,7 +25,6 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     // global variable
-    private SearchView searchView;
     private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList;
@@ -36,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         // set recyclerView adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        movieAdapter = new MovieAdapter();
-        recyclerView.setAdapter(movieAdapter);
 
         // calling getData method
         getData();
@@ -58,13 +58,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
 //            TODO: 5. change responsemodel
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-                movieList = response.body();
+                List<Movie> movieList = response.body();
+                movieAdapter = new MovieAdapter(movieList);
+                recyclerView.setAdapter(movieAdapter);
 
-                movieAdapter.setMovieList(getApplicationContext(),movieList);
 
                 /*
                 for (int i=0; i<movieList.size();i++){
-                    tv.append(
+                    recyclerView.append(
                             "\n\nid: " +movieList.get(i).getTitle()
                                     + "\ntitle: " +movieList.get(i).getTitle()
                                     + "\nbody: " +movieList.get(i).geturl()
@@ -81,38 +82,33 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // filter search code1
-    // generated onCreateOptionMenu method
+    // this is working
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setMaxWidth(Integer.MAX_VALUE);
+        MenuItem menuitem = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuitem.getActionView();
 
-        // act when text is entered
+        // After creating filter method in adapter
+        // generate two method
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            // two method generated
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                // getFilter should be created in MovieAdapter
-                movieAdapter.getFilter().filter(query);
+            public boolean onQueryTextSubmit(String s) {
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String query) {
-                movieAdapter.getFilter().filter(query);
+            public boolean onQueryTextChange(String s) {
+                movieAdapter.getFilter().filter(s.toString());
                 return false;
             }
         });
 
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     // option item selected
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_search) {
@@ -130,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         super.onBackPressed();
-    }
+    }*/
+
 
 }

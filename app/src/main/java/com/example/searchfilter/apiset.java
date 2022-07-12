@@ -13,7 +13,7 @@ public interface apiset {
 //    TODO: 2. Change json_user_fetch.php and responsemodel
 
     // 2.1 methods GET, POST, UPDATE, DELETE (METHODS)
-    @GET("posts")
+    @GET("photos")
     // call list type data from responsemodel and method name
     Call<List<Movie>> getdata();
 
