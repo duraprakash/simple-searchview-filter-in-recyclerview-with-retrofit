@@ -26,9 +26,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> implements Filterable {
 
-//     implements Filterable
     // global variable
     private List<Movie> movieList; // mExampleList
     private List<Movie> movieListFiltered;
@@ -63,7 +62,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     }
 
     // this is working
-    /*
     @Override
     public Filter getFilter() {
         // calling method
@@ -99,7 +97,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             notifyDataSetChanged();
         }
     };
-    */
 
     // MyViewHolder class
     public static class MyViewHolder extends RecyclerView.ViewHolder {

@@ -30,10 +30,13 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     // global variable
-    private RecyclerView recyclerView;
-    private MovieAdapter movieAdapter;
-    private List<Movie> movieList;
+    private RecyclerView recyclerView; // mRecyclerView
+    private MovieAdapter movieAdapter; // mAdapter
+    private List<Movie> movieList; // mExampleList
     private RecyclerView.LayoutManager mlayoutManager;
+
+    // for searcView search
+    List<Movie> filterList = new ArrayList<>();
 
     EditText etSearch;
 
@@ -56,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
@@ -81,10 +86,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         movieAdapter.filterList(filteredList);
+        movieAdapter.notifyDataSetChanged();
     }
 
     // method created for searchView filter
-/*
     private void Filter(String searchText) {
         for (Movie movie : movieList){
             Log.i(TAG, "Filter: "+movie);
@@ -95,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(new MovieAdapter(filterList));
         movieAdapter.notifyDataSetChanged();
     }
-*/
 
     // getData method created
     private void getData() {
@@ -123,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // this is working
-/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -147,5 +150,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-*/
 }
