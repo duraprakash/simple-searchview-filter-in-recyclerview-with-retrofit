@@ -11,8 +11,10 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,14 +26,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> implements Filterable {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
 
+//     implements Filterable
     // global variable
-    private List<Movie> movieList;
+    private List<Movie> movieList; // mExampleList
     private List<Movie> movieListFiltered;
 
     // this is working
-    public MovieAdapter( List<Movie> movieList) {
+    public MovieAdapter(List<Movie> movieList) {
         this.movieList = movieList;
         movieListFiltered = new ArrayList<>(movieList);
     }
@@ -46,8 +49,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        Movie currentItem = movieList.get(position);
         holder.title.setText("title: " +movieList.get(position).getTitle());
-        holder.tvurl.setText("url: " +movieList.get(position).getTitle());
+//        holder.tvurl.setText("url: " +movieList.get(position).getTitle());
         holder.image.setImageResource(R.drawable.ic_launcher_background);
 //        Glide.with(holder.image).load(movieList.get(position).getThumbnailUrl()).apply(RequestOptions.centerCropTransform()).into(holder.image);
     }
@@ -59,6 +63,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
     }
 
     // this is working
+    /*
     @Override
     public Filter getFilter() {
         // calling method
@@ -94,9 +99,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             notifyDataSetChanged();
         }
     };
+    */
 
     // MyViewHolder class
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title, tvurl;
         ImageView image;
         // constructor
@@ -106,5 +112,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
             image = (ImageView) itemView.findViewById(R.id.image);
             tvurl = (TextView) itemView.findViewById(R.id.tvurl);
         }
+    }
+
+    // edit text filter
+    public void filterList(List<Movie> filteredList){
+        movieList = filteredList;
+        notifyDataSetChanged();
     }
 }

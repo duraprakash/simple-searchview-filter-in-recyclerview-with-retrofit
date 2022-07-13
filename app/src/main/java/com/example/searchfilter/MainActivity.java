@@ -9,13 +9,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import retrofit2.Call;
@@ -28,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private MovieAdapter movieAdapter;
     private List<Movie> movieList;
+    private RecyclerView.LayoutManager mlayoutManager;
+
+    EditText etSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +46,59 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         // set recyclerView adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
 
         // calling getData method
         getData();
+
+        etSearch = (EditText) findViewById(R.id.etSearch);
+        // edit text search filter
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // calling method
+                editTextFilter(s.toString());
+            }
+        });
+
+
     }
+
+    // method created for editText filter
+    private void editTextFilter(String searchText) {
+        List<Movie> filteredList = new ArrayList<>();
+        for (Movie item : movieList){
+            if(item.getTitle().toLowerCase().contains(searchText.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+        movieAdapter.filterList(filteredList);
+    }
+
+    // method created for searchView filter
+/*
+    private void Filter(String searchText) {
+        for (Movie movie : movieList){
+            Log.i(TAG, "Filter: "+movie);
+//            if (Integer.toString(movie.getId()).equals(searchText)){
+            if (movie.getTitle().toString().toLowerCase().contains(searchText)){
+            }
+        }
+        recyclerView.setAdapter(new MovieAdapter(filterList));
+        movieAdapter.notifyDataSetChanged();
+    }
+*/
 
     // getData method created
     private void getData() {
-// TODO: new array list object
         movieList = new ArrayList<>();
         Call<List<Movie>> call = apicontroller
                 .getInstance()
@@ -56,26 +109,13 @@ public class MainActivity extends AppCompatActivity {
         // rvc response data in simple model type list [6]
         call.enqueue(new Callback<List<Movie>>() {
             @Override
-//            TODO: 5. change responsemodel
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-                List<Movie> movieList = response.body();
+                movieList = response.body();
                 movieAdapter = new MovieAdapter(movieList);
                 recyclerView.setAdapter(movieAdapter);
-
-
-                /*
-                for (int i=0; i<movieList.size();i++){
-                    recyclerView.append(
-                            "\n\nid: " +movieList.get(i).getTitle()
-                                    + "\ntitle: " +movieList.get(i).getTitle()
-                                    + "\nbody: " +movieList.get(i).geturl()
-                    );
-                }
-                */
             }
 
             @Override
-//            TODO: 6. change responsemodel
             public void onFailure(Call<List<Movie>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Sorry! " + t, Toast.LENGTH_SHORT).show();
             }
@@ -83,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // this is working
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -106,27 +147,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-
-    // option item selected
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_search) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    // back press
-    @Override
-    public void onBackPressed() {
-        if (!searchView.isIconified()) {
-            searchView.setIconified(true);
-            return;
-        }
-        super.onBackPressed();
-    }*/
-
-
+*/
 }

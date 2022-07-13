@@ -3,6 +3,9 @@ package com.example.searchfilter;
 import com.google.gson.annotations.SerializedName;
 
 public class Movie {
+    @SerializedName("id")
+    private int id;
+
     @SerializedName("title")
     private String title;
 
@@ -12,7 +15,7 @@ public class Movie {
     @SerializedName("image")
     private String url;
 
-    public Movie() {
+    public Movie(int ic_launcher_background, String one, String url) {
     }
 
     public Movie(String title, String thumbnailUrl, String url) {
@@ -43,6 +46,14 @@ public class Movie {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     //    public Movie(String title, String url) {
 //        this.title = title;

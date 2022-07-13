@@ -8,12 +8,18 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <EditText
+        android:id="@+id/etSearch"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="wrap_content"
+        android:hint="Search..."
+        android:paddingStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:drawableEnd="@drawable/ic_baseline_search_24"
+        android:singleLine="true">
+<!--        <requestFocus/>-->
+    </EditText>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
